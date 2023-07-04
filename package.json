@@ -3,9 +3,12 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "docker:build": "COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build",
+    "docker:up": "docker-compose up"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.4.1",
     "@vercel/otel": "^0.3.0",
     "next": "latest",
     "react": "^18.2.0",
