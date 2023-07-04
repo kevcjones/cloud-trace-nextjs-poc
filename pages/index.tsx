@@ -1,20 +1,8 @@
 import useSWR from 'swr'
 import PersonComponent from '../components/Person'
 import type { Person } from '../interfaces'
-import { trace } from '@opentelemetry/api'
 
-const fetcher = async (url: string) => {
-  return await trace
-    .getTracer('next-app')
-    .startActiveSpan('fetchPerson', async (span) => {
-      try {
-        const res =  await fetch(url)
-        return res.json()
-      } finally {
-        span.end()
-      }
-    })
-}
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function Index() {
   const { data, error, isLoading } = useSWR<Person[]>('/api/people', fetcher)

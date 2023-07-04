@@ -1,15 +1,26 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import type { Person, ResponseError } from '../../interfaces'
+import { trace } from '@opentelemetry/api'
 
 const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  const data = await res.json()
+  return await trace
+    .getTracer('next-app')
+    .startActiveSpan('fetchPerson', async (span) => {
+      try {
+        const res =  await fetch(url)
+        const data = await res.json()
+        data.traced = 'trying to trace'
 
-  if (res.status !== 200) {
-    throw new Error(data.message)
-  }
-  return data
+        if (res.status !== 200) {
+          throw new Error(data.message)
+        }
+
+        return data
+      } finally {
+        span.end()
+      }
+    })
 }
 
 export default function PersonPage() {
