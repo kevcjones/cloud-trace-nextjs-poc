@@ -5,7 +5,7 @@ import { trace } from '@opentelemetry/api'
 
 const fetcher = async (url: string) => {
   return await trace
-    .getTracer('nextjs-poc-example')
+    .getTracer('next-app')
     .startActiveSpan('fetchPerson', async (span) => {
       try {
         const res =  await fetch(url)
