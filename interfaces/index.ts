@@ -6,7 +6,8 @@ export type Person = {
   hair_color: string
   skin_color: string
   eye_color: string
-  gender: string
+  gender: string,
+  stars?: any
 }
 
 export type ResponseError = {

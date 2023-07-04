@@ -1,24 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { people } from '../../../data'
 import type { Person, ResponseError } from '../../../interfaces'
-import { trace } from '@opentelemetry/api'
-
-const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const fakePromiseWithTrace = async () => {
-  return await trace
-    .getTracer('next-app')
-    .startActiveSpan('fakePause', async (span) => {
-      try {
-        await pause(1000)
-        console.log('fakePause')
-        return true
-      } finally {
-        span.end()
-      }
-    })
-  }
-    
+import { fetchGithubStars } from '../../../shared/fetch-github-stars'
 
 export default async function personHandler(
   req: NextApiRequest,
@@ -26,9 +9,11 @@ export default async function personHandler(
 ) {
   const { query } = req
   const { id } = query
-  const person = people.find((p) => p.id === id)
+  const person: Person = people.find((p) => p.id === id)
+  const stars = await fetchGithubStars()
 
-  await fakePromiseWithTrace()
+  // noddy 
+  person.stars = stars
 
   // User with id exists
   return person
