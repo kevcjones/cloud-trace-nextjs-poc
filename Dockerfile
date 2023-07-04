@@ -17,6 +17,7 @@ WORKDIR /app
 
 ENV NEXT_OTEL_VERBOSE 1
 ENV NODE_ENV production
+ENV OTEL_EXPORTER_OTLP_TRACES_PROTOCOL grpc
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
