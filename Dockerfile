@@ -15,6 +15,7 @@ RUN npm run build
 FROM node:18-alpine AS runner
 WORKDIR /app
 
+ENV NEXT_OTEL_VERBOSE 1
 ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs
