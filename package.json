@@ -18,7 +18,6 @@
     "@opentelemetry/sdk-trace-base": "^1.14.0",
     "@opentelemetry/sdk-trace-node": "^1.14.0",
     "@opentelemetry/semantic-conventions": "^1.14.0",
-    "@vercel/otel": "^0.3.0",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
