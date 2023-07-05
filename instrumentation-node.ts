@@ -5,17 +5,27 @@ import { NodeSDK } from '@opentelemetry/sdk-node'
 import { Resource } from '@opentelemetry/resources'
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-node'
-import { TraceExporter } from "@google-cloud/opentelemetry-cloud-trace-exporter";
+import { TraceExporter, TraceExporterOptions } from "@google-cloud/opentelemetry-cloud-trace-exporter";
 
 const sdk = new NodeSDK({
     // sampler: new AlwaysOnSampler(),
     resource: new Resource({
         [SemanticResourceAttributes.SERVICE_NAME]: 'next-app',
     }),
-    instrumentations: [getNodeAutoInstrumentations({
-        '@opentelemetry/instrumentation-http': {},
+    instrumentations: [
+    getNodeAutoInstrumentations({
+        '@opentelemetry/instrumentation-http': {
+            applyCustomAttributesOnSpan: (span, _, response) => {
+                if(response.statusCode >= 400) {
+                    span.setAttribute('error.status', response.statusCode)
+                    span.setAttribute('error.message', response.statusMessage)
+                }
+            } 
+        },
     })],
-    spanProcessor: new BatchSpanProcessor(new TraceExporter()),
+    spanProcessor: new BatchSpanProcessor(new TraceExporter({
+        stringifyArrayAttributes: true,
+    })),
 })
 
 sdk.start()

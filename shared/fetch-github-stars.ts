@@ -1,16 +1,20 @@
-import { diag as log, trace } from '@opentelemetry/api'
+import { tracer, log, context } from "../instrumentation-node"
 
 export async function fetchGithubStars() {
-    const span = trace.getTracer('next-app-tracer').startSpan('fetchGithubStars-span-other')
-        return fetch('https://api.github.com/repos/vercel/next.js', {
+    const span = tracer.startSpan('fetchGithubStars-span',{},context.active())
+    return fetch('https://api.github.com/repos/vercel/next.js', {
         next: {
             revalidate: 0,
         },
     })
         .then((res) => res.json())
-        .then((data) => data.stargazers_count)
+        .then((data) => {
+          span.setAttribute('github.stars', data.stargazers_count)
+          data.stargazers_count
+        })
         .catch((err) => {
             log.error(err)
+            span.setAttribute('error', err.message)
             return 0
         })
         .finally(() => {
