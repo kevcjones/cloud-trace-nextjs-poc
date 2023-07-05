@@ -1,4 +1,4 @@
-import { tracer } from "../instrumentation-node"
+import { tracer, log } from "../instrumentation-node"
 
 export async function fetchGithubStars() {
     const span = tracer.startSpan('fetchGithubStars')
@@ -9,8 +9,12 @@ export async function fetchGithubStars() {
     })
         .then((res) => res.json())
         .then((data) => data.stargazers_count)
+        .catch((err) => {
+            log.error(err)
+            return 0
+        })
         .finally(() => {
-            console.log('hello world log')
+            log.info('hello world log')
             span.end()
         })
 }

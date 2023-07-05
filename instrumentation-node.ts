@@ -1,5 +1,5 @@
 // instrumentation.node.ts
-import { trace, context } from '@opentelemetry/api';
+import { trace, context, diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { Resource } from '@opentelemetry/resources'
@@ -20,5 +20,7 @@ const sdk = new NodeSDK({
 
 sdk.start()
 
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR)
+
 export const tracer = trace.getTracer('next-app-tracer');
-export { context };
+export { context, diag as log };
