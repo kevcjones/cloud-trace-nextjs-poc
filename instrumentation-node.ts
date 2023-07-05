@@ -5,7 +5,7 @@ import { NodeSDK } from '@opentelemetry/sdk-node'
 import { Resource } from '@opentelemetry/resources'
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { AlwaysOnSampler, BatchSpanProcessor } from '@opentelemetry/sdk-trace-node'
-import { TraceExporter } from "@google-cloud/opentelemetry-cloud-trace-exporter";
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 
 const sdk = new NodeSDK({
     sampler: new AlwaysOnSampler(),
@@ -19,8 +19,9 @@ const sdk = new NodeSDK({
             },
         },
     })],
-    spanProcessor: new BatchSpanProcessor(new TraceExporter()),
+    spanProcessor: new BatchSpanProcessor(new OTLPTraceExporter()),
 })
+
 sdk.start()
 
 export const tracer = trace.getTracer('next-app-tracer');
