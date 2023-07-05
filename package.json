@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "NEXT_OTEL_VERBOSE=1 next start",
+    "start": "OTEL_LOG_LEVEL=all NEXT_OTEL_VERBOSE=1 next start",
     "docker:build": "COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build",
     "docker:up": "docker-compose up"
   },

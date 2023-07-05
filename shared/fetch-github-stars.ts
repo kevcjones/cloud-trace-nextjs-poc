@@ -1,8 +1,6 @@
-//import opentelemetry from '@opentelemetry/api'
-import opentelemetry from "@opentelemetry/api";
+import { tracer } from "../instrumentation-node"
 
 export async function fetchGithubStars() {
-    const tracer = opentelemetry.trace.getTracer('basic')
     const span = tracer.startSpan('fetchGithubStars')
     return fetch('https://api.github.com/repos/vercel/next.js', {
         next: {
