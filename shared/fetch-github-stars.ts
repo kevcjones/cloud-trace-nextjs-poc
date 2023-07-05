@@ -14,7 +14,7 @@ export async function fetchGithubStars() {
             return 0
         })
         .finally(() => {
-            log.info('hello world log')
+            log.info('test-log-with-obj',{ foo: 'bar', arr: [1,2,3,4] })
             span.end()
         })
 }
