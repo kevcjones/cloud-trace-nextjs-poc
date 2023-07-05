@@ -1,7 +1,7 @@
 import { tracer, log } from "../instrumentation-node"
 
 export async function fetchGithubStars() {
-    const span = tracer.startSpan('fetchGithubStars')
+    const span = tracer.startSpan('fetchGithubStars-span')
     return fetch('https://api.github.com/repos/vercel/next.js', {
         next: {
             revalidate: 0,
