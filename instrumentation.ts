@@ -1,10 +1,7 @@
-import { context, propagation } from '@opentelemetry/api'
-
-const headers = {}
-propagation.inject(context.active(), headers)
-
-export async function register() {
-    if (process.env.NEXT_RUNTIME === 'nodejs') {
-      await import('./instrumentation.node')
-    }
+export function register() {
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+      // We use this instrumentation for easier debugging with this test.
+      // We want this test to be executable with `pnpm next-with-deps`.
+      require('./instrumentation-node.ts')
   }
+}
